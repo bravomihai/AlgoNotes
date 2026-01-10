@@ -28,3 +28,16 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignore JAR libraries
+*.jar
+
+# Build output
+out/
+
+# IntelliJ
+.idea/
+*.iml
+
+# SQLite
+*.db

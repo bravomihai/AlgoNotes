@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e60e32cf-b5dc-4e19-8161-06a7471582b4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/resources/schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ui/AppBootstrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AlgoNotes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AlgoNotes.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/dev.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/queries/Query.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slf4j-api-2.0.17.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/slf4j-simple-2.0.17.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlite-jdbc-3.46.0.1.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +103,7 @@
       <workItem from="1767905157671" duration="1917000" />
       <workItem from="1768060513016" duration="16993000" />
       <workItem from="1768077800555" duration="267000" />
-      <workItem from="1768078073579" duration="3042000" />
+      <workItem from="1768078073579" duration="3443000" />
     </task>
     <servers />
   </component>
