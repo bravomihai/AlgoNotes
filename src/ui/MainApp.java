@@ -11,8 +11,11 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        AppBootstrap.init();
+
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("main.fxml")
+                MainApp.class.getResource("/ui/main.fxml")
         );
 
         Scene scene = new Scene(loader.load());
