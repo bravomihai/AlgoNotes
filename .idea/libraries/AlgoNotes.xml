@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="AlgoNotes">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/slf4j-api-2.0.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sqlite-jdbc-3.46.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/slf4j-simple-2.0.17.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

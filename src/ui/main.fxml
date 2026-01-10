@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ui.MainController">
+
+    <center>
+        <StackPane>
+
+            <!-- ================================================= -->
+            <!-- =================== BROWSE ===================== -->
+            <!-- ================================================= -->
+            <HBox fx:id="browseView" spacing="12">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+
+                <!-- SITES -->
+                <VBox spacing="8" prefWidth="200">
+                    <Label text="Sites"/>
+                    <ListView fx:id="sitesList" VBox.vgrow="ALWAYS"/>
+
+                    <Button fx:id="editSiteButton" text="Edit site" onAction="#onEditSite"/>
+                    <Button text="+ Add site" onAction="#onAddSite"/>
+
+                    <Label text="Selected site:"/>
+                    <Hyperlink fx:id="selectedSiteLink"
+                               onAction="#onCopySiteLink"/>
+                </VBox>
+
+                <!-- PROBLEMS -->
+                <VBox spacing="8" prefWidth="280">
+                    <Label text="Problems"/>
+                    <ListView fx:id="problemsList" VBox.vgrow="ALWAYS"/>
+
+                    <Button fx:id="editProblemButton" text="Edit problem" onAction="#onEditProblem"/>
+                    <Button fx:id="addProblemButton" text="+ Add problem" onAction="#onAddProblem"/>
+                </VBox>
+
+                <!-- NOTES + INFO -->
+                <HBox spacing="10" HBox.hgrow="ALWAYS">
+
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Notes"/>
+                        <TextArea fx:id="noteArea" VBox.vgrow="ALWAYS"/>
+                        <Button text="Save note"
+                                onAction="#onSaveNote"/>
+                    </VBox>
+
+                    <VBox spacing="8" prefWidth="180">
+                        <Label text="Difficulty:"/>
+                        <Label fx:id="difficultyLabel"/>
+
+                        <Label text="Tries:"/>
+                        <Label fx:id="triesLabel"/>
+
+                        <Label text="Link:"/>
+                        <Hyperlink fx:id="problemLink"
+                                   onAction="#onCopyProblemLink"/>
+                    </VBox>
+
+                </HBox>
+            </HBox>
+
+            <!-- ================================================= -->
+            <!-- ================= ADD SITE ===================== -->
+            <!-- ================================================= -->
+            <VBox fx:id="addSiteView" spacing="10"
+                  visible="false" managed="false">
+                <padding><Insets top="20"/></padding>
+
+                <Label text="Add Site"/>
+                <TextField fx:id="addSiteNameField" promptText="Site name"/>
+                <TextField fx:id="addSiteUrlField" promptText="Site URL"/>
+
+                <HBox spacing="10">
+                    <Button text="Save" onAction="#onSaveAddSite"/>
+                    <Button text="Cancel" onAction="#onCancel"/>
+                </HBox>
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- ================= EDIT SITE ==================== -->
+            <!-- ================================================= -->
+            <VBox fx:id="editSiteView" spacing="10"
+                  visible="false" managed="false">
+                <padding><Insets top="20"/></padding>
+
+                <Label text="Edit Site"/>
+                <TextField fx:id="editSiteNameField"/>
+                <TextField fx:id="editSiteUrlField"/>
+
+                <HBox spacing="10">
+                    <Button text="Save" onAction="#onSaveEditSite"/>
+                    <Button text="Cancel" onAction="#onCancel"/>
+                    <Button text="Remove"
+                            style="-fx-background-color: #e57373; -fx-text-fill: white;"
+                            onAction="#onRemoveSite"/>
+
+                </HBox>
+
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- ================ ADD PROBLEM =================== -->
+            <!-- ================================================= -->
+            <VBox fx:id="addProblemView" spacing="10"
+                  visible="false" managed="false">
+                <padding><Insets top="20"/></padding>
+
+                <Label text="Add Problem"/>
+                <TextField fx:id="addProblemCodeField" promptText="Code"/>
+                <TextField fx:id="addProblemTitleField" promptText="Title"/>
+                <TextField fx:id="addProblemDifficultyField" promptText="Difficulty"/>
+                <TextField fx:id="addProblemLinkField" promptText="Link"/>
+                <Spinner fx:id="addProblemTriesSpinner" editable="true"/>
+
+
+                <HBox spacing="10">
+                    <Button text="Save" onAction="#onSaveAddProblem"/>
+                    <Button text="Cancel" onAction="#onCancel"/>
+                </HBox>
+            </VBox>
+
+            <!-- ================================================= -->
+            <!-- ================ EDIT PROBLEM ================== -->
+            <!-- ================================================= -->
+            <VBox fx:id="editProblemView" spacing="10"
+                  visible="false" managed="false">
+                <padding><Insets top="20"/></padding>
+
+                <Label text="Edit Problem"/>
+                <TextField fx:id="editProblemCodeField"/>
+                <TextField fx:id="editProblemTitleField"/>
+                <TextField fx:id="editProblemDifficultyField"/>
+                <TextField fx:id="editProblemLinkField"/>
+                <Spinner fx:id="editProblemTriesSpinner" editable="true"/>
+
+
+                <HBox spacing="10">
+                    <Button text="Save" onAction="#onSaveEditProblem"/>
+                    <Button text="Cancel" onAction="#onCancel"/>
+                </HBox>
+
+                <Button text="Remove"
+                        style="-fx-background-color: #e57373; -fx-text-fill: white;"
+                        onAction="#onRemoveProblem"/>
+
+            </VBox>
+
+        </StackPane>
+    </center>
+</BorderPane>
