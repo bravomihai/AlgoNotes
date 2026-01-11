@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.AddEditProblemController"
+      spacing="12"
+      maxWidth="420"
+      styleClass="panel">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label fx:id="titleLabel"
+           text="Add Problem"
+           styleClass="form-title"/>
+
+    <TextField fx:id="codeField"
+               promptText="Code"/>
+
+    <TextField fx:id="titleField"
+               promptText="Title"/>
+
+    <TextField fx:id="difficultyField"
+               promptText="Difficulty"/>
+
+    <TextField fx:id="linkField"
+               promptText="Link"/>
+
+    <Spinner fx:id="triesSpinner"
+             editable="true"/>
+
+    <HBox spacing="10">
+        <Button text="Save"
+                styleClass="primary-button"
+                onAction="#onSave"/>
+
+        <Button text="Cancel"
+                styleClass="primary-button"
+                onAction="#onCancel"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="deleteButton"
+                text="Remove"
+                styleClass="danger-button"
+                onAction="#onDelete"/>
+    </HBox>
+
+</VBox>

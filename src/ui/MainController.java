@@ -1,12 +1,14 @@
 package ui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import dao.SiteDAO;
 import dao.ProblemDAO;
@@ -20,341 +22,181 @@ import java.util.List;
 
 public class MainController {
 
-    // ===== BROWSE =====
+    @FXML private StackPane overlay;
     @FXML private HBox browseView;
+    @FXML private Pane dimPane;
+
     @FXML private ListView<Site> sitesList;
     @FXML private ListView<Problem> problemsList;
+
     @FXML private TextArea noteArea;
     @FXML private Hyperlink selectedSiteLink;
     @FXML private Hyperlink problemLink;
     @FXML private Label difficultyLabel;
     @FXML private Label triesLabel;
-    @FXML private Button addProblemButton;
-    @FXML private Button editProblemButton;
-    @FXML private Button editSiteButton;
 
-    // ===== ADD SITE =====
-    @FXML private VBox addSiteView;
-    @FXML private TextField addSiteNameField;
-    @FXML private TextField addSiteUrlField;
-
-    // ===== EDIT SITE =====
-    @FXML private VBox editSiteView;
-    @FXML private TextField editSiteNameField;
-    @FXML private TextField editSiteUrlField;
-
-    // ===== ADD PROBLEM =====
-    @FXML private VBox addProblemView;
-    @FXML private TextField addProblemCodeField;
-    @FXML private TextField addProblemTitleField;
-    @FXML private TextField addProblemDifficultyField;
-    @FXML private TextField addProblemLinkField;
-    @FXML private Spinner<Integer> addProblemTriesSpinner;
-
-    // ===== EDIT PROBLEM =====
-    @FXML private VBox editProblemView;
-    @FXML private TextField editProblemCodeField;
-    @FXML private TextField editProblemTitleField;
-    @FXML private TextField editProblemDifficultyField;
-    @FXML private TextField editProblemLinkField;
-    @FXML private Spinner<Integer> editProblemTriesSpinner;
-
-    // ===== SAVE NOTE =====
-    @FXML private Button saveNoteButton;
-
-    // ===== STATE =====
     private Site currentSite;
     private Problem currentProblem;
 
-    // ===== DAO =====
     private final SiteDAO siteDAO = new SiteDAO();
     private final ProblemDAO problemDAO = new ProblemDAO();
     private final NoteDAO noteDAO = new NoteDAO();
 
-    // ===== INIT =====
+    @FXML private Button addProblemButton;
+    @FXML private Button editProblemButton;
+    @FXML private Button editSiteButton;
+
     @FXML
     public void initialize() {
+
+        editSiteButton.disableProperty().bind(
+                sitesList.getSelectionModel().selectedItemProperty().isNull()
+        );
+
         addProblemButton.disableProperty().bind(
-                sitesList.getSelectionModel()
-                        .selectedItemProperty()
-                        .isNull()
+                sitesList.getSelectionModel().selectedItemProperty().isNull()
         );
 
         editProblemButton.disableProperty().bind(
-                problemsList.getSelectionModel()
-                        .selectedItemProperty()
-                        .isNull()
-        );
-
-        editSiteButton.disableProperty().bind(
-                sitesList.getSelectionModel()
-                        .selectedItemProperty()
-                        .isNull()
-        );
-
-        saveNoteButton.disableProperty().bind(
-                problemsList.getSelectionModel()
-                        .selectedItemProperty()
-                        .isNull()
+                problemsList.getSelectionModel().selectedItemProperty().isNull()
         );
 
         noteArea.disableProperty().bind(
-                problemsList.getSelectionModel()
-                        .selectedItemProperty()
-                        .isNull()
+                problemsList.getSelectionModel().selectedItemProperty().isNull()
         );
-
-        initNumericSpinner(addProblemTriesSpinner);
-        initNumericSpinner(editProblemTriesSpinner);
 
         initListeners();
         refreshSites();
-        show(browseView);
+        overlay.getChildren().setAll(browseView, dimPane);
+
     }
 
-    private void commitEditorText(Spinner<Integer> spinner) {
-        String text = spinner.getEditor().getText();
-        if (text == null || text.isBlank()) {
-            spinner.getValueFactory().setValue(0);
-        } else {
-            spinner.getValueFactory().setValue(Integer.parseInt(text));
-        }
-    }
 
-    private void initNumericSpinner(Spinner<Integer> spinner) {
-        SpinnerValueFactory.IntegerSpinnerValueFactory factory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1_000_000, 0);
+    /* ================= OPEN MODALS ================= */
 
-        spinner.setValueFactory(factory);
-        spinner.setEditable(true);
-
-        TextField editor = spinner.getEditor();
-
-        editor.textProperty().addListener((obs, old, val) -> {
-            if (!val.matches("\\d*")) {
-                editor.setText(val.replaceAll("[^\\d]", ""));
-            }
-        });
-
-        editor.focusedProperty().addListener((obs, old, focused) -> {
-            if (!focused) {
-                commitEditorText(spinner);
-            }
-        });
-    }
-
-    // ===== VIEW SWITCH =====
-    private void hideAll() {
-        hide(browseView);
-        hide(addSiteView);
-        hide(editSiteView);
-        hide(addProblemView);
-        hide(editProblemView);
-    }
-
-    private void show(Region r) {
-        hideAll();
-        r.setVisible(true);
-        r.setManaged(true);
-    }
-
-    private void hide(Region r) {
-        r.setVisible(false);
-        r.setManaged(false);
-    }
-
-    // ===== SITE =====
     @FXML
     private void onAddSite() {
-        addSiteNameField.clear();
-        addSiteUrlField.clear();
-        show(addSiteView);
+        openSiteModal(null);
     }
 
     @FXML
     private void onEditSite() {
-        if (currentSite == null) return;
-        editSiteNameField.setText(currentSite.getName());
-        editSiteUrlField.setText(currentSite.getUrl());
-        show(editSiteView);
+        if (currentSite != null)
+            openSiteModal(currentSite);
     }
 
-    @FXML
-    private void onSaveAddSite() throws SQLException {
-        siteDAO.insert(new Site(0,
-                addSiteNameField.getText(),
-                addSiteUrlField.getText()));
+    private void onSiteRemoved() {
+        currentSite = null;
+        currentProblem = null;
+
+        sitesList.getSelectionModel().clearSelection();
+        problemsList.getItems().clear();
+
+        difficultyLabel.setText("");
+        triesLabel.setText("");
+        problemLink.setText("");
+        noteArea.clear();
+
         refreshSites();
-        show(browseView);
     }
 
-    @FXML
-    private void onSaveEditSite() throws SQLException {
-        currentSite.setName(editSiteNameField.getText());
-        currentSite.setUrl(editSiteUrlField.getText());
-        siteDAO.update(currentSite);
-        refreshSites();
-        show(browseView);
-    }
 
-    @FXML
-    private void onRemoveSite() {
-        if (currentSite == null) return;
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Remove Site");
-        alert.setHeaderText("Remove site: " + currentSite.getName());
-        alert.setContentText(
-                "All problems and notes for this site will be deleted.\n" +
-                        "This action cannot be undone."
-        );
-
-        alert.showAndWait().ifPresent(result -> {
-            if (result == ButtonType.OK) {
-                try {
-                    siteDAO.deleteById(currentSite.getId());
-                    currentSite = null;
-                    problemsList.getItems().clear();
-                    refreshSites();
-                    show(browseView);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    // ===== PROBLEM =====
     @FXML
     private void onAddProblem() {
-        if (currentSite == null) return;
-        addProblemCodeField.clear();
-        addProblemTitleField.clear();
-        addProblemDifficultyField.clear();
-        addProblemLinkField.clear();
-        addProblemTriesSpinner.getValueFactory().setValue(0);
-        show(addProblemView);
+        if (currentSite != null)
+            openProblemModal(null);
     }
 
     @FXML
     private void onEditProblem() {
-        if (currentProblem == null) return;
-        editProblemCodeField.setText(currentProblem.getCode());
-        editProblemTitleField.setText(currentProblem.getTitle());
-        editProblemDifficultyField.setText(currentProblem.getDifficulty());
-        editProblemLinkField.setText(currentProblem.getLink());
-        editProblemTriesSpinner.getValueFactory().setValue(currentProblem.getTries());
-        show(editProblemView);
+        if (currentProblem != null)
+            openProblemModal(currentProblem);
     }
 
-    @FXML
-    private void onSaveAddProblem() throws SQLException {
-        problemDAO.insert(new Problem(
-                0,
-                currentSite.getId(),
-                addProblemCodeField.getText(),
-                addProblemTitleField.getText(),
-                addProblemDifficultyField.getText(),
-                addProblemLinkField.getText(),
-                addProblemTriesSpinner.getValue()
-        ));
-        refreshProblems();
-        show(browseView);
-    }
+    private void openSiteModal(Site site) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("add_edit_site.fxml"));
+            Parent view = loader.load();
 
-    @FXML
-    private void onSaveEditProblem() throws SQLException {
-        currentProblem.setCode(editProblemCodeField.getText());
-        currentProblem.setTitle(editProblemTitleField.getText());
-        currentProblem.setDifficulty(editProblemDifficultyField.getText());
-        currentProblem.setLink(editProblemLinkField.getText());
-        currentProblem.setTries(editProblemTriesSpinner.getValue());
-        problemDAO.update(currentProblem);
-        refreshProblems();
-        show(browseView);
-    }
+            AddEditSiteController c = loader.getController();
+            c.init(site, siteDAO, this::onSiteRemoved, this::refreshSites, this::closeModal);
 
-    @FXML
-    private void onRemoveProblem() {
-        if (currentProblem == null) return;
+            showModal(view);
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Remove Problem");
-        alert.setHeaderText("Remove problem: " + currentProblem.getCode());
-        alert.setContentText(
-                "All notes for this problem will be deleted.\n" +
-                        "This action cannot be undone."
-        );
-
-        alert.showAndWait().ifPresent(result -> {
-            if (result == ButtonType.OK) {
-                try {
-                    problemDAO.deleteById(currentProblem.getId());
-                    currentProblem = null;
-                    refreshProblems();
-                    noteArea.clear();
-                    show(browseView);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-
-    // ===== NOTE =====
-    @FXML
-    private void onSaveNote() throws SQLException {
-        if (currentProblem == null) return;
-
-        String content = noteArea.getText();
-
-        List<Note> notes = noteDAO.findByProblemId(currentProblem.getId());
-
-        if (notes.isEmpty()) {
-            noteDAO.insert(new Note(
-                    currentProblem.getId(),
-                    content
-            ));
-        } else {
-            Note note = notes.get(0);
-            note.setContent(content);
-            noteDAO.update(note);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+    private void openProblemModal(Problem p) {
+        try {
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("add_edit_problem.fxml"));
 
-    // ===== NAV =====
-    @FXML
-    private void onCancel() {
-        show(browseView);
+            Parent view = loader.load();
+
+            AddEditProblemController controller =
+                    loader.getController(); // FĂRĂ cast manual
+
+            controller.init(
+                    p,
+                    currentSite,
+                    problemDAO,
+                    this::refreshProblems,
+                    this::closeModal
+            );
+
+            showModal(view);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // ===== LISTENERS =====
+    private void showModal(Parent modal) {
+        browseView.setDisable(true);
+
+        dimPane.setVisible(true);
+        dimPane.setManaged(true);
+
+        overlay.getChildren().add(modal);
+    }
+
+    private void closeModal() {
+        // scoate ultimul copil (modalul)
+        if (overlay.getChildren().size() > 2) {
+            overlay.getChildren().remove(overlay.getChildren().size() - 1);
+        }
+
+        browseView.setDisable(false);
+
+        dimPane.setVisible(false);
+        dimPane.setManaged(false);
+    }
+
+    /* ================= LISTENERS ================= */
+
     private void initListeners() {
+        sitesList.getSelectionModel().selectedItemProperty().addListener((o, a, s) -> {
+            currentSite = s;
+            if (s == null) return;
+            selectedSiteLink.setText(s.getUrl());
+            refreshProblems();
+        });
 
-        sitesList.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((o, a, site) -> {
-                    currentSite = site;
-                    if (site == null) return;
-                    selectedSiteLink.setText(site.getUrl());
-                    refreshProblems();
-                });
-
-        problemsList.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((o, a, p) -> {
-                    currentProblem = p;
-                    if (p == null) return;
-                    difficultyLabel.setText(p.getDifficulty());
-                    triesLabel.setText(String.valueOf(p.getTries()));
-                    problemLink.setText(p.getLink());
-                    loadNote();
-                });
+        problemsList.getSelectionModel().selectedItemProperty().addListener((o, a, p) -> {
+            currentProblem = p;
+            if (p == null) return;
+            difficultyLabel.setText(p.getDifficulty());
+            triesLabel.setText(String.valueOf(p.getTries()));
+            problemLink.setText(p.getLink());
+            loadNote();
+        });
     }
 
-    // ===== HELPERS =====
+    /* ================= DATA ================= */
+
     private void refreshSites() {
         try {
             sitesList.getItems().setAll(siteDAO.findAll());
@@ -366,8 +208,7 @@ public class MainController {
     private void refreshProblems() {
         if (currentSite == null) return;
         try {
-            problemsList.getItems().setAll(
-                    problemDAO.findBySiteId(currentSite.getId()));
+            problemsList.getItems().setAll(problemDAO.findBySiteId(currentSite.getId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -382,7 +223,22 @@ public class MainController {
         }
     }
 
-    // ===== CLIPBOARD =====
+    @FXML
+    private void onSaveNote() throws SQLException {
+        if (currentProblem == null) return;
+        String content = noteArea.getText();
+        List<Note> notes = noteDAO.findByProblemId(currentProblem.getId());
+        if (notes.isEmpty()) {
+            noteDAO.insert(new Note(currentProblem.getId(), content));
+        } else {
+            Note n = notes.get(0);
+            n.setContent(content);
+            noteDAO.update(n);
+        }
+    }
+
+    /* ================= CLIPBOARD ================= */
+
     @FXML
     private void onCopySiteLink() {
         copy(selectedSiteLink.getText());

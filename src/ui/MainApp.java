@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
+import java.util.Objects;
+
 public class MainApp extends Application {
 
     @Override
@@ -19,6 +21,10 @@ public class MainApp extends Application {
         );
 
         Scene scene = new Scene(loader.load());
+        
+        addCss(scene, "/css/base.css");
+        addCss(scene, "/css/dark.css");
+
         stage.setScene(scene);
         stage.setTitle("AlgoNotes");
 
@@ -29,6 +35,13 @@ public class MainApp extends Application {
 
         stage.show();
     }
+
+    private void addCss(Scene scene, String path) {
+        scene.getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource(path)).toExternalForm()
+        );
+    }
+
 
     public static void main(String[] args) {
         launch(args);

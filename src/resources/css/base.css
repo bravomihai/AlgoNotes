@@ -1,0 +1,66 @@
+.app-root {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+}
+
+.overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.55);
+}
+
+
+.panel {
+    -fx-padding: 12;
+    -fx-background-radius: 8;
+}
+
+.section-title {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+
+.info-label {
+    -fx-font-size: 25px;
+    -fx-opacity: 0.7;
+}
+
+.primary-button,
+.danger-button {
+    -fx-padding: 6 12;
+    -fx-background-radius: 6;
+    -fx-font-weight: bold;
+}
+
+.content-list {
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+}
+
+.content-area {
+    -fx-background-radius: 6;
+    -fx-padding: 0.7;
+}
+
+.label.info-value {
+    -fx-font-size: 17px;
+}
+
+.hyperlink.info-link {
+    -fx-font-size: 17px;
+    -fx-underline: true;
+}
+
+.button:disabled {
+    -fx-opacity: 0.5;
+}
+
+.form-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.section-subtitle {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+

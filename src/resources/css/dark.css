@@ -1,0 +1,104 @@
+/*noinspection ALL*/
+.app-root {
+    /* ===== BACKGROUNDS ===== */
+    -bg-main: #1e1e1e;
+    -bg-panel: #252526;
+    -bg-control: #1f1f1f;
+    -bg-hover: #333333;
+
+    /* ===== TEXT ===== */
+    -text-primary: #ffffff;
+    -text-secondary: #cccccc;
+    -text-normal: #dddddd;
+    -text-muted: #888888;
+
+    /* ===== ACCENT===== */
+    -accent-color: #2d89ef;
+    -accent-hover: #1b5fa7;
+
+    /* ===== DANGER ===== */
+    -danger-color: #c94f4f;
+    -danger-hover: #a63c3c;
+
+    -fx-background-color: -bg-main;
+}
+
+.panel {
+    -fx-background-color: -bg-panel;
+}
+
+.section-title {
+    -fx-text-fill: -text-primary;
+}
+
+.info-label {
+    -fx-text-fill: -text-secondary;
+}
+
+.primary-button {
+    -fx-background-color: -accent-color;
+    -fx-text-fill: -text-primary;
+}
+
+.primary-button:hover {
+    -fx-background-color: -accent-hover;
+}
+
+.danger-button {
+    -fx-background-color: -danger-color;
+    -fx-text-fill: -text-primary;
+}
+
+.danger-button:hover {
+    -fx-background-color: -danger-hover;
+}
+
+.content-list {
+    -fx-control-inner-background: -bg-control;
+    -fx-background-color: -bg-control;
+}
+
+.content-list .list-cell {
+    -fx-text-fill: -text-normal;
+}
+
+.content-list .list-cell:selected {
+    -fx-background-color: -accent-color;
+    -fx-text-fill: -text-primary;
+}
+
+.content-list .list-cell:hover {
+    -fx-background-color: -bg-hover;
+}
+
+.content-area {
+    -fx-control-inner-background: -bg-control;
+    -fx-text-fill: -text-normal;
+    -fx-highlight-fill: -accent-color;
+    -fx-highlight-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-muted;
+}
+
+.info-value {
+    -fx-text-fill: -text-primary;
+}
+
+.info-link {
+    -fx-text-fill: -accent-color;
+}
+
+.info-link:hover {
+    -fx-text-fill: -accent-hover;
+}
+
+.button:disabled {
+    -fx-background-color: -bg-panel;
+}
+
+.form-title {
+    -fx-text-fill: -text-primary;
+}
+
+.section-subtitle {
+    -fx-text-fill: -text-primary;
+}

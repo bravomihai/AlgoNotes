@@ -5,159 +5,99 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
-        xmlns:fx="http://javafx.com/fxml"
-        fx:controller="ui.MainController"
-        styleClass="app-root">
-
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ui.MainController"
+            styleClass="app-root">
 
     <center>
-        <StackPane>
+        <!-- StackPane: browse + modals -->
+        <StackPane fx:id="overlay">
 
-            <!-- ================================================= -->
-            <!-- =================== BROWSE ===================== -->
-            <!-- ================================================= -->
+            <!-- ================= BROWSE VIEW ================= -->
             <HBox fx:id="browseView" spacing="12">
+
+                <Pane fx:id="dimPane"
+                      visible="false"
+                      managed="false"
+                      style="-fx-background-color: rgba(0,0,0,0.35);" />
+
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
 
-                <!-- SITES -->
-                <VBox spacing="8"
-                      prefWidth="200"
-                      styleClass="panel">
-
+                <!-- ===== SITES ===== -->
+                <VBox spacing="8" prefWidth="200" styleClass="panel">
                     <Label text="Sites" styleClass="section-title"/>
 
-                    <ListView fx:id="sitesList" VBox.vgrow="ALWAYS"/>
+                    <ListView fx:id="sitesList"
+                              VBox.vgrow="ALWAYS"
+                              styleClass="content-list"/>
 
-                    <Button fx:id="editSiteButton" text="Edit site" onAction="#onEditSite"/>
-                    <Button text="+ Add site" onAction="#onAddSite"/>
+                    <Button text="+ Add site"
+                            styleClass="primary-button"
+                            onAction="#onAddSite"/>
 
-                    <Label text="Selected site:"/>
+                    <Button text="Edit site"
+                            fx:id = "editSiteButton"
+                            styleClass="primary-button"
+                            onAction="#onEditSite"/>
+
+                    <Label text="Selected site link:" styleClass="section-subtitle"/>
+
                     <Hyperlink fx:id="selectedSiteLink"
+
                                onAction="#onCopySiteLink"/>
                 </VBox>
 
-                <!-- PROBLEMS -->
+                <!-- ===== PROBLEMS ===== -->
                 <VBox spacing="8" prefWidth="280">
                     <Label text="Problems" styleClass="section-title"/>
 
-                    <ListView fx:id="problemsList" VBox.vgrow="ALWAYS"/>
+                    <ListView fx:id="problemsList"
+                              VBox.vgrow="ALWAYS"
+                              styleClass="content-list"/>
 
-                    <Button fx:id="editProblemButton" text="Edit problem" onAction="#onEditProblem"/>
-                    <Button fx:id="addProblemButton" text="+ Add problem" onAction="#onAddProblem"/>
+                    <Button text="+ Add problem"
+                            fx:id="addProblemButton"
+                            styleClass="primary-button"
+                            onAction="#onAddProblem"/>
+
+                    <Button text="Edit problem"
+                            fx:id="editProblemButton"
+                            styleClass="primary-button"
+                            onAction="#onEditProblem"/>
                 </VBox>
 
-                <!-- NOTES + INFO -->
+                <!-- ===== NOTES + INFO ===== -->
                 <HBox spacing="10" HBox.hgrow="ALWAYS">
 
                     <VBox spacing="8" HBox.hgrow="ALWAYS">
-                        <Label text="Notes"/>
-                        <TextArea fx:id="noteArea" VBox.vgrow="ALWAYS"/>
-                        <Button fx:id="saveNoteButton" text="Save note"
+                        <Label text="Notes" styleClass="section-subtitle"/>
+
+                        <TextArea fx:id="noteArea"
+                                  VBox.vgrow="ALWAYS"
+                                  styleClass="content-area"/>
+
+                        <Button text="Save note"
+                                styleClass="primary-button"
                                 onAction="#onSaveNote"/>
                     </VBox>
 
-                    <VBox spacing="8" prefWidth="180">
-                        <Label text="Difficulty:"/>
-                        <Label fx:id="difficultyLabel"/>
+                    <VBox spacing="8" minWidth="200" prefWidth="220">
+                        <Label text="Difficulty:" styleClass="info-label"/>
+                        <Label fx:id="difficultyLabel" styleClass="info-value"/>
 
-                        <Label text="Tries:"/>
-                        <Label fx:id="triesLabel"/>
+                        <Label text="Tries:" styleClass="info-label"/>
+                        <Label fx:id="triesLabel" styleClass="info-value"/>
 
-                        <Label text="Link:"/>
+                        <Label text="Link:" styleClass="info-label"/>
                         <Hyperlink fx:id="problemLink"
+                                   styleClass="info-link"
                                    onAction="#onCopyProblemLink"/>
                     </VBox>
 
                 </HBox>
             </HBox>
-
-            <!-- ================================================= -->
-            <!-- ================= ADD SITE ===================== -->
-            <!-- ================================================= -->
-            <VBox fx:id="addSiteView" spacing="10"
-                  visible="false" managed="false">
-                <padding><Insets top="20"/></padding>
-
-                <Label text="Add Site"/>
-                <TextField fx:id="addSiteNameField" promptText="Site name"/>
-                <TextField fx:id="addSiteUrlField" promptText="Site URL"/>
-
-                <HBox spacing="10">
-                    <Button text="Save" onAction="#onSaveAddSite"/>
-                    <Button text="Cancel" onAction="#onCancel"/>
-                </HBox>
-            </VBox>
-
-            <!-- ================================================= -->
-            <!-- ================= EDIT SITE ==================== -->
-            <!-- ================================================= -->
-            <VBox fx:id="editSiteView" spacing="10"
-                  visible="false" managed="false">
-                <padding><Insets top="20"/></padding>
-
-                <Label text="Edit Site"/>
-                <TextField fx:id="editSiteNameField"/>
-                <TextField fx:id="editSiteUrlField"/>
-
-                <HBox spacing="10">
-                    <Button text="Save" onAction="#onSaveEditSite"/>
-                    <Button text="Cancel" onAction="#onCancel"/>
-                    <Button text="Remove"
-                            style="-fx-background-color: #e57373; -fx-text-fill: white;"
-                            onAction="#onRemoveSite"/>
-
-                </HBox>
-
-            </VBox>
-
-            <!-- ================================================= -->
-            <!-- ================ ADD PROBLEM =================== -->
-            <!-- ================================================= -->
-            <VBox fx:id="addProblemView" spacing="10"
-                  visible="false" managed="false">
-                <padding><Insets top="20"/></padding>
-
-                <Label text="Add Problem"/>
-                <TextField fx:id="addProblemCodeField" promptText="Code"/>
-                <TextField fx:id="addProblemTitleField" promptText="Title"/>
-                <TextField fx:id="addProblemDifficultyField" promptText="Difficulty"/>
-                <TextField fx:id="addProblemLinkField" promptText="Link"/>
-                <Spinner fx:id="addProblemTriesSpinner" editable="true"/>
-
-
-                <HBox spacing="10">
-                    <Button text="Save" onAction="#onSaveAddProblem"/>
-                    <Button text="Cancel" onAction="#onCancel"/>
-                </HBox>
-            </VBox>
-
-            <!-- ================================================= -->
-            <!-- ================ EDIT PROBLEM ================== -->
-            <!-- ================================================= -->
-            <VBox fx:id="editProblemView" spacing="10"
-                  visible="false" managed="false">
-                <padding><Insets top="20"/></padding>
-
-                <Label text="Edit Problem"/>
-                <TextField fx:id="editProblemCodeField"/>
-                <TextField fx:id="editProblemTitleField"/>
-                <TextField fx:id="editProblemDifficultyField"/>
-                <TextField fx:id="editProblemLinkField"/>
-                <Spinner fx:id="editProblemTriesSpinner" editable="true"/>
-
-
-                <HBox spacing="10">
-                    <Button text="Save" onAction="#onSaveEditProblem"/>
-                    <Button text="Cancel" onAction="#onCancel"/>
-                </HBox>
-
-                <Button text="Remove"
-                        style="-fx-background-color: #e57373; -fx-text-fill: white;"
-                        onAction="#onRemoveProblem"/>
-
-            </VBox>
 
         </StackPane>
     </center>

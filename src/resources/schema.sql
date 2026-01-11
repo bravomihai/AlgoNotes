@@ -12,6 +12,7 @@ CREATE TABLE problems (
                           difficulty TEXT,
                           link TEXT,
                           tries INTEGER,
+                          UNIQUE(site_id, code),
                           FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
 );
 
@@ -26,5 +27,6 @@ CREATE TABLE notes (
 
 CREATE INDEX idx_problems_site_id ON problems(site_id);
 CREATE INDEX idx_notes_problem_id ON notes(problem_id);
+
 
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.AddEditSiteController"
+      spacing="12"
+      maxWidth="420"
+      styleClass="panel">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label fx:id="titleLabel"
+           text="Add Site"
+           styleClass="form-title"/>
+
+    <TextField fx:id="nameField"
+               promptText="Site name"/>
+
+    <TextField fx:id="urlField"
+               promptText="Site URL"/>
+
+    <HBox spacing="10">
+        <Button text="Save"
+                styleClass="primary-button"
+                onAction="#onSave"/>
+
+        <Button text="Cancel"
+                styleClass="primary-button"
+                onAction="#onCancel"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="deleteButton"
+                text="Remove"
+                styleClass="danger-button"
+                onAction="#onDelete"/>
+    </HBox>
+
+</VBox>
