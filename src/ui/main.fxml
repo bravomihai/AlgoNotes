@@ -5,8 +5,10 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ui.MainController">
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="ui.MainController"
+        styleClass="app-root">
+
 
     <center>
         <StackPane>
@@ -20,8 +22,12 @@
                 </padding>
 
                 <!-- SITES -->
-                <VBox spacing="8" prefWidth="200">
-                    <Label text="Sites"/>
+                <VBox spacing="8"
+                      prefWidth="200"
+                      styleClass="panel">
+
+                    <Label text="Sites" styleClass="section-title"/>
+
                     <ListView fx:id="sitesList" VBox.vgrow="ALWAYS"/>
 
                     <Button fx:id="editSiteButton" text="Edit site" onAction="#onEditSite"/>
@@ -34,7 +40,8 @@
 
                 <!-- PROBLEMS -->
                 <VBox spacing="8" prefWidth="280">
-                    <Label text="Problems"/>
+                    <Label text="Problems" styleClass="section-title"/>
+
                     <ListView fx:id="problemsList" VBox.vgrow="ALWAYS"/>
 
                     <Button fx:id="editProblemButton" text="Edit problem" onAction="#onEditProblem"/>
@@ -47,7 +54,7 @@
                     <VBox spacing="8" HBox.hgrow="ALWAYS">
                         <Label text="Notes"/>
                         <TextArea fx:id="noteArea" VBox.vgrow="ALWAYS"/>
-                        <Button text="Save note"
+                        <Button fx:id="saveNoteButton" text="Save note"
                                 onAction="#onSaveNote"/>
                     </VBox>
 

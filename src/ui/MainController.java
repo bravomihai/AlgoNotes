@@ -51,7 +51,6 @@ public class MainController {
     @FXML private TextField addProblemLinkField;
     @FXML private Spinner<Integer> addProblemTriesSpinner;
 
-
     // ===== EDIT PROBLEM =====
     @FXML private VBox editProblemView;
     @FXML private TextField editProblemCodeField;
@@ -59,6 +58,9 @@ public class MainController {
     @FXML private TextField editProblemDifficultyField;
     @FXML private TextField editProblemLinkField;
     @FXML private Spinner<Integer> editProblemTriesSpinner;
+
+    // ===== SAVE NOTE =====
+    @FXML private Button saveNoteButton;
 
     // ===== STATE =====
     private Site currentSite;
@@ -86,6 +88,18 @@ public class MainController {
 
         editSiteButton.disableProperty().bind(
                 sitesList.getSelectionModel()
+                        .selectedItemProperty()
+                        .isNull()
+        );
+
+        saveNoteButton.disableProperty().bind(
+                problemsList.getSelectionModel()
+                        .selectedItemProperty()
+                        .isNull()
+        );
+
+        noteArea.disableProperty().bind(
+                problemsList.getSelectionModel()
                         .selectedItemProperty()
                         .isNull()
         );
