@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import model.Site;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class AddEditSiteController {
 
@@ -13,19 +15,21 @@ public class AddEditSiteController {
     @FXML private TextField nameField;
     @FXML private TextField urlField;
     @FXML private Button deleteButton;
-    private Runnable onRemoved;
+    private Runnable onSiteDeleted;
+    private Consumer<Site> onAdded;
 
     private Site site;
     private SiteDAO dao;
     private Runnable onSuccess;
     private Runnable onClose;
 
-    public void init(Site site, SiteDAO dao, Runnable onRemoved, Runnable onSuccess, Runnable onClose) {
+    public void init(Site site, SiteDAO dao, Runnable onSiteDeleted, Runnable onSuccess, Consumer<Site> onAdded, Runnable onClose) {
         this.site = site;
         this.dao = dao;
         this.onSuccess = onSuccess;
         this.onClose = onClose;
-        this.onRemoved = onRemoved;
+        this.onAdded = onAdded;
+        this.onSiteDeleted = onSiteDeleted;
 
         if (site == null) {
             titleLabel.setText("Add Site");
@@ -43,10 +47,12 @@ public class AddEditSiteController {
             showError("Site name is required");
             return;
         }
-
+        Site saved = site;
         try {
             if (site == null) {
-                dao.insert(new Site(0, nameField.getText(), urlField.getText()));
+                Site newSite = new Site(0, nameField.getText(), urlField.getText());
+                saved = dao.insert(newSite);
+
             } else {
                 site.setName(nameField.getText());
                 site.setUrl(urlField.getText());
@@ -54,6 +60,7 @@ public class AddEditSiteController {
             }
 
             onSuccess.run();
+            onAdded.accept(saved);
             onClose.run();
 
         } catch (SQLException e) {
@@ -70,16 +77,31 @@ public class AddEditSiteController {
     @FXML
     private void onDelete() {
         if (site == null) return;
-        try {
-            dao.deleteById(site.getId());
-            onSuccess.run();
-            onRemoved.run();
-            onClose.run();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Remove site");
+        alert.setHeaderText("Remove site: " + site.getName());
+        alert.setContentText(
+                "All problems and notes for this site will be deleted.\n" +
+                        "This action cannot be undone."
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+            return; // user cancelled
         }
 
+        try {
+            dao.deleteById(site.getId());
+            onSuccess.run();   // refreshSites()
+            onSiteDeleted.run();
+            onClose.run();     // closeModal
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Failed to remove site.");
+        }
     }
+
 
     @FXML
     private void onCancel() {

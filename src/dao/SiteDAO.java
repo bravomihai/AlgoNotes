@@ -9,17 +9,26 @@ import java.util.List;
 
 public class SiteDAO {
 
-    public void insert(Site site) throws SQLException {
-        String sql = "INSERT INTO sites (name, url) VALUES (?, ?)";
+    public Site insert(Site site) throws SQLException {
+        String sql = "INSERT INTO sites(name, url) VALUES (?, ?)";
 
         try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+             PreparedStatement ps =
+                     c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, site.getName());
             ps.setString(2, site.getUrl());
             ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    site.setId(rs.getInt(1));
+                }
+            }
         }
+        return site;
     }
+
 
     public List<Site> findAll() throws SQLException {
         List<Site> result = new ArrayList<>();

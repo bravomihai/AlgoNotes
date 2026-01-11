@@ -9,11 +9,15 @@ import java.util.List;
 
 public class ProblemDAO {
 
-    public void insert(Problem problem) throws SQLException {
-        String sql = "INSERT INTO problems (site_id, code, title, difficulty, link, tries) VALUES (?, ?, ?, ?, ?, ?)";
+    public Problem insert(Problem problem) throws SQLException {
+        String sql = """
+        INSERT INTO problems (site_id, code, title, difficulty, link, tries)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """;
 
         try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+             PreparedStatement ps =
+                     c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, problem.getSiteId());
             ps.setString(2, problem.getCode());
@@ -21,9 +25,18 @@ public class ProblemDAO {
             ps.setString(4, problem.getDifficulty());
             ps.setString(5, problem.getLink());
             ps.setInt(6, problem.getTries());
+
             ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    problem.setId(rs.getInt(1));
+                }
+            }
         }
+        return problem;
     }
+
 
     public List<Problem> findAll() throws SQLException {
         List<Problem> result = new ArrayList<>();

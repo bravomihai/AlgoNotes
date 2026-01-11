@@ -8,7 +8,8 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="ui.AddEditSiteController"
       spacing="12"
-      maxWidth="420"
+      maxWidth="450"
+      maxHeight="0"
       styleClass="panel">
 
     <padding>

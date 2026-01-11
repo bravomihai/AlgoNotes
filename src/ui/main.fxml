@@ -28,6 +28,8 @@
                 <!-- ===== SITES ===== -->
                 <VBox spacing="8" prefWidth="200" styleClass="panel">
                     <Label text="Sites" styleClass="section-title"/>
+                    <TextField fx:id="siteSearchField"
+                               promptText="Search site by name"/>
 
                     <ListView fx:id="sitesList"
                               VBox.vgrow="ALWAYS"
@@ -49,11 +51,12 @@
                                onAction="#onCopySiteLink"/>
                 </VBox>
 
-                <!-- ===== PROBLEMS ===== -->
-                <VBox spacing="8" prefWidth="280">
+                <!-- ===== PROBLEMS ===== --><VBox spacing="8" prefWidth="280" styleClass= "panel">
                     <Label text="Problems" styleClass="section-title"/>
+                    <TextField fx:id="problemSearchField"
+                           promptText="Search problem by code"/>
 
-                    <ListView fx:id="problemsList"
+                <ListView fx:id="problemsList"
                               VBox.vgrow="ALWAYS"
                               styleClass="content-list"/>
 
@@ -69,20 +72,22 @@
                 </VBox>
 
                 <!-- ===== NOTES + INFO ===== -->
-                <HBox spacing="10" HBox.hgrow="ALWAYS">
+                <HBox spacing="10" HBox.hgrow="ALWAYS" styleClass= "panel">
 
                     <VBox spacing="8" HBox.hgrow="ALWAYS">
-                        <Label text="Notes" styleClass="section-subtitle"/>
+                        <Label text="Notes" styleClass="section-title"/>
 
                         <TextArea fx:id="noteArea"
                                   VBox.vgrow="ALWAYS"
                                   styleClass="content-area"/>
 
                         <Button text="Save note"
+                                fx:id="saveNoteButton"
                                 styleClass="primary-button"
                                 onAction="#onSaveNote"/>
                     </VBox>
-
+                </HBox>
+                <HBox spacing="10" styleClass= "panel">
                     <VBox spacing="8" minWidth="200" prefWidth="220">
                         <Label text="Difficulty:" styleClass="info-label"/>
                         <Label fx:id="difficultyLabel" styleClass="info-value"/>
@@ -94,8 +99,12 @@
                         <Hyperlink fx:id="problemLink"
                                    styleClass="info-link"
                                    onAction="#onCopyProblemLink"/>
-                    </VBox>
+                        <Label text="Date added:" styleClass="info-label"/>
+                        <Label fx:id="dateAddedLabel" styleClass="info-value"/>
 
+                        <Label text="Last updated:" styleClass="info-label"/>
+                        <Label fx:id="lastUpdatedLabel" styleClass="info-value"/>
+                    </VBox>
                 </HBox>
             </HBox>
 

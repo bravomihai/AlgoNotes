@@ -8,6 +8,7 @@ import model.Site;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class AddEditProblemController {
 
@@ -24,15 +25,18 @@ public class AddEditProblemController {
     private ProblemDAO dao;
     private Runnable onSuccess;
     private Runnable onClose;
+    private Runnable onProblemDeleted;
+    private Consumer<Problem> onAdded;
 
-    public void init(Problem p, Site site, ProblemDAO dao,
-                     Runnable onSuccess, Runnable onClose) {
-
+    public void init(Problem p, Site site, ProblemDAO dao, Runnable onProblemDeleted,
+                     Runnable onSuccess, Consumer<Problem> onAdded, Runnable onClose) {
         this.problem = p;
         this.site = site;
         this.dao = dao;
         this.onSuccess = onSuccess;
         this.onClose = onClose;
+        this.onAdded = onAdded;
+        this.onProblemDeleted = onProblemDeleted;
 
         triesSpinner.setValueFactory(
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1_000_000, 0)
@@ -63,11 +67,11 @@ public class AddEditProblemController {
             showError("Code and title are required.");
             return;
         }
-
+        Problem saved = problem;
         try {
             if (problem == null) {
                 // ADD
-                dao.insert(new Problem(
+                Problem newProblem = new Problem(
                         0,
                         site.getId(),
                         code.trim(),
@@ -75,7 +79,11 @@ public class AddEditProblemController {
                         difficultyField.getText(),
                         linkField.getText(),
                         triesSpinner.getValue()
-                ));
+                );
+
+                saved = dao.insert(newProblem);
+                onAdded.accept(saved);
+
             } else {
                 // EDIT
                 problem.setCode(code.trim());
@@ -88,6 +96,7 @@ public class AddEditProblemController {
             }
 
             onSuccess.run(); // refreshProblems()
+            onAdded.accept(saved);
             onClose.run();   // closeModal()
 
         } catch (SQLException e) {
@@ -106,7 +115,6 @@ public class AddEditProblemController {
             }
         }
     }
-
 
     @FXML
     private void onDelete() {
@@ -128,13 +136,13 @@ public class AddEditProblemController {
         try {
             dao.deleteById(problem.getId());
             onSuccess.run();
+            onProblemDeleted.run();
             onClose.run();
         } catch (Exception e) {
             e.printStackTrace();
             showError("Failed to remove problem");
         }
     }
-
 
     @FXML
     private void onCancel() {

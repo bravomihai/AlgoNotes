@@ -8,8 +8,9 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="ui.AddEditProblemController"
       spacing="12"
-      maxWidth="420"
-      styleClass="panel">
+      maxWidth="450"
+      maxHeight="0"
+      styleClass="panel-dialog">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

@@ -79,6 +79,7 @@
     -fx-prompt-text-fill: -text-muted;
 }
 
+
 .info-value {
     -fx-text-fill: -text-primary;
 }
@@ -101,4 +102,13 @@
 
 .section-subtitle {
     -fx-text-fill: -text-primary;
+}
+
+.panel-dialog {
+    -fx-background-color: -bg-panel;
+}
+
+.info-label{
+    -fx-text-fill: -text-primary;
+
 }

@@ -20,7 +20,7 @@
 
 .info-label {
     -fx-font-size: 25px;
-    -fx-opacity: 0.7;
+    -fx-font-weight: bold;
 }
 
 .primary-button,
@@ -61,6 +61,11 @@
 .section-subtitle {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
+}
+
+.panel-dialog {
+    -fx-padding: 24;
+    -fx-background-radius: 12;
 }
 
 

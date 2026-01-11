@@ -3,6 +3,7 @@ package ui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
@@ -26,6 +27,11 @@ public class MainApp extends Application {
         addCss(scene, "/css/dark.css");
 
         stage.setScene(scene);
+        stage.getIcons().add(
+                new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream("/icons/app.png"))
+                )
+        );
         stage.setTitle("AlgoNotes");
 
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
