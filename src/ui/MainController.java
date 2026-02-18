@@ -289,7 +289,6 @@ public class MainController {
         problemsList.getSelectionModel().clearSelection();
 
         noteArea.clear();
-        noteArea.setDisable(true);
 
         difficultyLabel.setText("-");
         triesLabel.setText("-");

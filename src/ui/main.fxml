@@ -79,7 +79,8 @@
 
                         <TextArea fx:id="noteArea"
                                   VBox.vgrow="ALWAYS"
-                                  styleClass="content-area"/>
+                                  styleClass="content-area"
+                                  wrapText="true"/>
 
                         <Button text="Save note"
                                 fx:id="saveNoteButton"
