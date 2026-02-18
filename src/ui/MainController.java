@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -107,9 +108,20 @@ public class MainController {
 
         initListeners();
 
-        refreshSites();
+        Platform.runLater(this::loadSitesAsync);
 
         overlay.getChildren().setAll(browseView, dimPane);
+    }
+
+    private void loadSitesAsync() {
+        new Thread(() -> {
+            try {
+                var sites = siteDAO.findAll();
+                Platform.runLater(() -> allSites.setAll(sites));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
 

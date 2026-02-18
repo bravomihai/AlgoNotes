@@ -41,3 +41,6 @@ out/
 
 # SQLite
 *.db
+
+# UUiD Upgrade code
+upgrade uuid.txt
